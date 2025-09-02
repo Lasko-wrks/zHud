@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z-HUD</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- HUD Principal -->
+    <div id="hud" class="hud">
+        <!-- Statistiques en carrés (bas gauche) -->
+        <div class="hud-section stats-container">
+            <!-- Santé -->
+            <div class="stat-square health-square">
+                <div class="stat-icon">
+                    <i data-lucide="heart-pulse"></i>
+                </div>
+                <div class="stat-progress">
+                    <div class="progress-bar health-bar" id="healthBar"></div>
+                </div>
+                <div class="stat-value" id="healthValue">100</div>
+            </div>
+            
+            <!-- Faim -->
+            <div class="stat-square hunger-square">
+                <div class="stat-icon">
+                    <i data-lucide="hamburger"></i>
+                </div>
+                <div class="stat-progress">
+                    <div class="progress-bar hunger-bar" id="hungerBar"></div>
+                </div>
+                <div class="stat-value" id="hungerValue">100</div>
+            </div>
+            
+            <!-- Soif -->
+            <div class="stat-square thirst-square">
+                <div class="stat-icon">
+                    <i data-lucide="droplets"></i>
+                </div>
+                <div class="stat-progress">
+                    <div class="progress-bar thirst-bar" id="thirstBar"></div>
+                </div>
+                <div class="stat-value" id="thirstValue">100</div>
+            </div>
+            
+            <!-- Armure -->
+            <div class="stat-square armor-square">
+                <div class="stat-icon">
+                    <i data-lucide="shield"></i>
+                </div>
+                <div class="stat-progress">
+                    <div class="progress-bar armor-bar" id="armorBar"></div>
+                </div>
+                <div class="stat-value" id="armorValue">0</div>
+            </div>
+        </div>
+
+        <!-- Informations du joueur (haut droite) -->
+        <div class="hud-section player-info">
+            <div class="info-item">
+                <div class="info-icon">
+                    <i data-lucide="briefcase"></i>
+                </div>
+                <span id="jobInfo">...</span>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i data-lucide="dollar-sign"></i>
+                </div>
+                <span id="moneyInfo">...</span>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i data-lucide="building-2"></i>
+                </div>
+                <span id="bankInfo">...</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
