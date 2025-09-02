@@ -50,8 +50,12 @@ Citizen.CreateThread(function()
         end)
     end
     
-    -- Première mise à jour du HUD
+    -- Envoyer la configuration au HUD
     Citizen.Wait(500)
+    sendConfigToHUD()
+    
+    -- Première mise à jour du HUD
+    Citizen.Wait(100)
     updateHUD()
     
     -- Vérification finale après 2 secondes
@@ -80,6 +84,20 @@ function updateHUD()
             money = PlayerData.money or 0,
             bank = PlayerData.bank or 0,
             id = PlayerData.identifier
+        }
+    })
+end
+
+-- Fonction pour envoyer la configuration au HUD
+function sendConfigToHUD()
+    SendNUIMessage({
+        type = 'updateConfig',
+        config = {
+            themeColor = CFG.themeColor,
+            elements = CFG.elements,
+            playerInfo = CFG.playerInfo,
+            blinkOnZero = CFG.blinkOnZero,
+            warnOnLow = CFG.warnOnLow
         }
     })
 end

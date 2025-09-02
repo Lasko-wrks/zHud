@@ -1,3 +1,8 @@
+/* Variables CSS dynamiques */
+:root {
+    --theme-color: #00FFAD;
+}
+
 /* Reset et base */
 * {
     margin: 0;
@@ -120,13 +125,20 @@ body {
 
 .progress-bar {
     width: 100%;
-    background: #00FFAD;
+    background: var(--theme-color);
     border-radius: 8px;
     transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     position: absolute;
     bottom: 0;
     left: 0;
     height: 0%;
+}
+
+/* Masquer complètement les barres à 0% */
+.progress-bar[style*="height: 0%"] {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .progress-bar.no-transition {
@@ -181,16 +193,91 @@ body {
 
 /* Couleurs spécifiques pour chaque type de statistique */
 .health-square {
-    border-color: #00FFAD;
+    border-color: var(--theme-color);
 }
 
 .health-square .progress-bar {
-    background: #00FFAD;
-    color: #00FFAD;
+    background: var(--theme-color);
+    color: var(--theme-color);
+}
+
+/* Effet de clignotement quand la vie atteint 0 */
+.health-square.zero-health {
+    animation: blinkRed 0.8s ease-in-out infinite;
+    box-shadow: 0 0 15px var(--theme-color);
+}
+
+.health-square.zero-health .progress-bar {
+    background: var(--theme-color);
+    box-shadow: 0 0 10px var(--theme-color);
+}
+
+/* Effet de clignotement pour l'armure à 0 */
+.armor-square.zero-armor {
+    animation: blinkRed 0.8s ease-in-out infinite;
+    box-shadow: 0 0 15px var(--theme-color);
+}
+
+.armor-square.zero-armor .progress-bar {
+    background: var(--theme-color);
+    box-shadow: 0 0 10px var(--theme-color);
+}
+
+/* Effet de clignotement pour la faim à 0 */
+.hunger-square.zero-hunger {
+    animation: blinkRed 0.8s ease-in-out infinite;
+    box-shadow: 0 0 15px var(--theme-color);
+}
+
+.hunger-square.zero-hunger .progress-bar {
+    background: var(--theme-color);
+    box-shadow: 0 0 10px var(--theme-color);
+}
+
+/* Effet de clignotement pour la soif à 0 */
+.thirst-square.zero-thirst {
+    animation: blinkRed 0.8s ease-in-out infinite;
+    box-shadow: 0 0 15px var(--theme-color);
+}
+
+.thirst-square.zero-thirst .progress-bar {
+    background: var(--theme-color);
+    box-shadow: 0 0 10px var(--theme-color);
+}
+
+/* Effet de warning à 10% (clignotement sans ombre) */
+.stat-square.warn-low {
+    animation: warnBlink 0.8s ease-in-out infinite;
+}
+
+@keyframes blinkRed {
+    0%, 100% { 
+        opacity: 1;
+        filter: brightness(1);
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.4;
+        filter: brightness(2);
+        transform: scale(1.05);
+    }
+}
+
+@keyframes warnBlink {
+    0%, 100% { 
+        opacity: 1;
+        filter: brightness(1);
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.6;
+        filter: brightness(1.2);
+        transform: scale(1.02);
+    }
 }
 
 .health-square .progress-bar::after {
-    background: linear-gradient(0deg, #00FFAD, transparent);
+    background: linear-gradient(0deg, var(--theme-color), transparent);
     animation: wave 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
@@ -199,16 +286,16 @@ body {
 }
 
 .hunger-square {
-    border-color: #00FFAD;
+    border-color: var(--theme-color);
 }
 
 .hunger-square .progress-bar {
-    background: #00FFAD;
-    color: #00FFAD;
+    background: var(--theme-color);
+    color: var(--theme-color);
 }
 
 .hunger-square .progress-bar::after {
-    background: linear-gradient(280deg, #00FFAD, transparent);
+    background: linear-gradient(280deg, var(--theme-color), transparent);
     animation: wave 3.5s cubic-bezier(0.5, 0, 0.3, 1) infinite;
 }
 
@@ -217,16 +304,16 @@ body {
 }
 
 .thirst-square {
-    border-color: #00FFAD;
+    border-color: var(--theme-color);
 }
 
 .thirst-square .progress-bar {
-    background: #00FFAD;
-    color: #00FFAD;
+    background: var(--theme-color);
+    color: var(--theme-color);
 }
 
 .thirst-square .progress-bar::after {
-    background: linear-gradient(10deg, #00FFAD, transparent);
+    background: linear-gradient(10deg, var(--theme-color), transparent);
     animation: wave 4.5s cubic-bezier(0.3, 0, 0.1, 1) infinite;
 }
 
@@ -235,16 +322,16 @@ body {
 }
 
 .armor-square {
-    border-color: #00FFAD;
+    border-color: var(--theme-color);
 }
 
 .armor-square .progress-bar {
-    background: #00FFAD;
-    color: #00FFAD;
+    background: var(--theme-color);
+    color: var(--theme-color);
 }
 
 .armor-square .progress-bar::after {
-    background: linear-gradient(280deg, #00FFAD, transparent);
+    background: linear-gradient(280deg, var(--theme-color), transparent);
     animation: wave 3.8s cubic-bezier(0.45, 0, 0.25, 1) infinite;
 }
 
@@ -275,8 +362,8 @@ body {
 }
 
 .info-item:hover .info-icon svg {
-    color: #00FFAD;
-    filter: drop-shadow(0 0 5px rgba(0, 255, 173, 0.6));
+    color: var(--theme-color);
+    filter: drop-shadow(0 0 5px var(--theme-color));
 }
 
 .info-icon {
@@ -296,7 +383,7 @@ body {
 .info-icon svg {
     width: 14px;
     height: 14px;
-    color: #00FFAD;
+    color: var(--theme-color);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 

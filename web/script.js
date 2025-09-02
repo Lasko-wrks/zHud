@@ -12,6 +12,36 @@ let hudData = {
     id: ''
 };
 
+// Configuration par défaut
+let config = {
+    themeColor: 'transparent',
+    elements: {
+        health: true,
+        armor: true,
+        hunger: true,
+        thirst: true
+    },
+    playerInfo: {
+        job: true,
+        money: true,
+        bank: true
+    },
+    blinkOnZero: {
+        health: true,
+        armor: true,
+        hunger: true,
+        thirst: true
+    },
+    warnOnLow: {
+        health: true,
+        armor: true,
+        hunger: true,
+        thirst: true
+    }
+};
+
+
+
 // Éléments DOM
 const elements = {
     hud: document.getElementById('hud'),
@@ -30,11 +60,85 @@ const elements = {
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', function() {
+    // Masquer immédiatement tous les éléments avant l'initialisation
+    hideAllElements();
+    
     // Initialiser les icônes Lucide
     lucide.createIcons();
     
+    // Appliquer la configuration par défaut
+    applyConfigToCSS();
+    
+    // Afficher seulement les éléments activés
+    toggleElements();
+    
+    // Animation d'apparition progressive
+    fadeInHUD();
+    
     setupEventListeners();
 });
+
+// Masquer tous les éléments au démarrage
+function hideAllElements() {
+    const allSquares = document.querySelectorAll('.stat-square');
+    const allInfoItems = document.querySelectorAll('.info-item');
+    const statsContainer = document.querySelector('.stats-container');
+    const playerInfoContainer = document.querySelector('.player-info');
+    
+    // Masquer tous les carrés de statistiques
+    allSquares.forEach(square => {
+        square.style.opacity = '0';
+        square.style.transform = 'scale(0.8)';
+    });
+    
+    // Masquer tous les éléments d'information
+    allInfoItems.forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(20px)';
+    });
+    
+    // Masquer les conteneurs
+    if (statsContainer) statsContainer.style.opacity = '0';
+    if (playerInfoContainer) playerInfoContainer.style.opacity = '0';
+}
+
+// Animation d'apparition progressive
+function fadeInHUD() {
+    const statsContainer = document.querySelector('.stats-container');
+    const playerInfoContainer = document.querySelector('.player-info');
+    
+    // Apparition du conteneur des statistiques
+    if (statsContainer && statsContainer.style.display !== 'none') {
+        statsContainer.style.transition = 'opacity 0.5s ease-out';
+        statsContainer.style.opacity = '1';
+        
+        // Apparition progressive des carrés
+        const visibleSquares = statsContainer.querySelectorAll('.stat-square[style*="display: flex"]');
+        visibleSquares.forEach((square, index) => {
+            setTimeout(() => {
+                square.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+                square.style.opacity = '1';
+                square.style.transform = 'scale(1)';
+            }, 100 + (index * 100));
+        });
+    }
+    
+    // Apparition du conteneur des informations joueur
+    if (playerInfoContainer && playerInfoContainer.style.display !== 'none') {
+        playerInfoContainer.style.transition = 'opacity 0.5s ease-out';
+        playerInfoContainer.style.opacity = '1';
+        
+        // Apparition progressive des éléments d'information
+        const visibleInfoItems = playerInfoContainer.querySelectorAll('.info-item[style*="display: flex"]');
+        visibleInfoItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, 200 + (index * 100));
+        });
+    }
+}
 
 // Configuration des écouteurs d'événements
 function setupEventListeners() {
@@ -51,7 +155,7 @@ function setupEventListeners() {
 
 // Gestion des messages NUI depuis Lua
 function handleNuiMessage(event) {
-    const { type, data, visible } = event.data;
+    const { type, data, visible, config: newConfig } = event.data;
     
     switch (type) {
         case 'updateHUD':
@@ -62,7 +166,9 @@ function handleNuiMessage(event) {
             toggleHUD(visible);
             break;
             
-
+        case 'updateConfig':
+            updateConfig(newConfig);
+            break;
             
         case 'reset':
             resetHUD();
@@ -70,6 +176,207 @@ function handleNuiMessage(event) {
             
         default:
             console.log('Message NUI non reconnu:', type);
+    }
+}
+
+// Mise à jour de la configuration
+function updateConfig(newConfig) {
+    if (newConfig) {
+        config = { ...config, ...newConfig };
+        applyConfigToCSS();
+        
+        // Réinitialiser l'état des warnings si la configuration change
+        resetWarningState();
+    }
+}
+
+// Réinitialiser l'état des warnings
+function resetWarningState() {
+    // Retirer tous les warnings actifs
+    const allSquares = document.querySelectorAll('.stat-square');
+    allSquares.forEach(square => {
+        square.classList.remove('warn-low', 'zero-health', 'zero-armor', 'zero-hunger', 'zero-thirst');
+    });
+}
+
+// Application de la configuration aux variables CSS
+function applyConfigToCSS() {
+    const root = document.documentElement;
+    
+    // Couleur du thème
+    root.style.setProperty('--theme-color', config.themeColor);
+    
+    // Masquer/afficher les éléments selon la configuration
+    toggleElements();
+}
+
+// Fonction pour masquer/afficher les éléments selon la configuration
+function toggleElements() {
+    // HUD Principal avec transitions
+    const healthSquare = elements.healthBar ? elements.healthBar.closest('.health-square') : null;
+    const armorSquare = elements.armorBar ? elements.armorBar.closest('.armor-square') : null;
+    const hungerSquare = elements.hungerBar ? elements.hungerBar.closest('.hunger-square') : null;
+    const thirstSquare = elements.thirstBar ? elements.thirstBar.closest('.thirst-square') : null;
+    
+    // Appliquer les changements avec transitions
+    if (healthSquare) {
+        healthSquare.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        if (config.elements.health) {
+            healthSquare.style.display = 'flex';
+            setTimeout(() => {
+                healthSquare.style.opacity = '1';
+                healthSquare.style.transform = 'scale(1)';
+            }, 10);
+        } else {
+            healthSquare.style.opacity = '0';
+            healthSquare.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                healthSquare.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+    if (armorSquare) {
+        armorSquare.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        if (config.elements.armor) {
+            armorSquare.style.display = 'flex';
+            setTimeout(() => {
+                armorSquare.style.opacity = '1';
+                armorSquare.style.transform = 'scale(1)';
+            }, 10);
+        } else {
+            armorSquare.style.opacity = '0';
+            armorSquare.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                armorSquare.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+    if (hungerSquare) {
+        hungerSquare.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        if (config.elements.hunger) {
+            hungerSquare.style.display = 'flex';
+            setTimeout(() => {
+                hungerSquare.style.opacity = '1';
+                hungerSquare.style.transform = 'scale(1)';
+            }, 10);
+        } else {
+            hungerSquare.style.opacity = '0';
+            hungerSquare.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                hungerSquare.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+    if (thirstSquare) {
+        thirstSquare.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        if (config.elements.thirst) {
+            thirstSquare.style.display = 'flex';
+            setTimeout(() => {
+                thirstSquare.style.opacity = '1';
+                thirstSquare.style.transform = 'scale(1)';
+            }, 10);
+        } else {
+            thirstSquare.style.opacity = '0';
+            thirstSquare.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                thirstSquare.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+    // HUD Informations joueur avec transitions
+    const jobItem = elements.jobInfo ? elements.jobInfo.closest('.info-item') : null;
+    const moneyItem = elements.moneyInfo ? elements.moneyInfo.closest('.info-item') : null;
+    const bankItem = elements.bankInfo ? elements.bankInfo.closest('.info-item') : null;
+    
+    if (jobItem) {
+        jobItem.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        if (config.playerInfo.job) {
+            jobItem.style.display = 'flex';
+            setTimeout(() => {
+                jobItem.style.opacity = '1';
+                jobItem.style.transform = 'translateX(0)';
+            }, 10);
+        } else {
+            jobItem.style.opacity = '0';
+            jobItem.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                jobItem.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+    if (moneyItem) {
+        moneyItem.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        if (config.playerInfo.money) {
+            moneyItem.style.display = 'flex';
+            setTimeout(() => {
+                moneyItem.style.opacity = '1';
+                moneyItem.style.transform = 'translateX(0)';
+            }, 10);
+        } else {
+            moneyItem.style.opacity = '0';
+            moneyItem.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                moneyItem.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+    if (bankItem) {
+        bankItem.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        if (config.playerInfo.bank) {
+            bankItem.style.display = 'flex';
+            setTimeout(() => {
+                bankItem.style.opacity = '1';
+                bankItem.style.transform = 'translateX(0)';
+            }, 10);
+        } else {
+            bankItem.style.opacity = '0';
+            bankItem.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                bankItem.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+    // Masquer complètement le conteneur stats-container si tous les éléments sont désactivés
+    const statsContainer = document.querySelector('.stats-container');
+    if (statsContainer) {
+        const hasVisibleStats = config.elements.health || config.elements.armor || config.elements.hunger || config.elements.thirst;
+        statsContainer.style.transition = 'opacity 0.5s ease-out';
+        if (hasVisibleStats) {
+            statsContainer.style.display = 'flex';
+            setTimeout(() => {
+                statsContainer.style.opacity = '1';
+            }, 10);
+        } else {
+            statsContainer.style.opacity = '0';
+            setTimeout(() => {
+                statsContainer.style.display = 'none';
+            }, 500);
+        }
+    }
+    
+    // Masquer complètement le conteneur player-info si tous les éléments sont désactivés
+    const playerInfoContainer = document.querySelector('.player-info');
+    if (playerInfoContainer) {
+        const hasVisibleElements = config.playerInfo.job || config.playerInfo.money || config.playerInfo.bank;
+        playerInfoContainer.style.transition = 'opacity 0.5s ease-out';
+        if (hasVisibleElements) {
+            playerInfoContainer.style.display = 'block';
+            setTimeout(() => {
+                playerInfoContainer.style.opacity = '1';
+            }, 10);
+        } else {
+            playerInfoContainer.style.opacity = '0';
+            setTimeout(() => {
+                playerInfoContainer.style.display = 'none';
+            }, 500);
+        }
     }
 }
 
@@ -109,11 +416,23 @@ function updateBar(barElement, valueElement, value, type) {
         // Retirer la classe après l'animation
         setTimeout(() => {
             barElement.classList.remove('initializing');
-            barElement.style.height = `${clampedValue}%`;
+            if (clampedValue <= 0) {
+                barElement.style.height = '0%';
+                barElement.style.display = 'none';
+            } else {
+                barElement.style.height = `${clampedValue}%`;
+                barElement.style.display = 'block';
+            }
         }, 1000);
     } else {
         // Pour les mises à jour suivantes, utiliser la transition CSS
-        barElement.style.height = `${clampedValue}%`;
+        if (clampedValue <= 0) {
+            barElement.style.height = '0%';
+            barElement.style.display = 'none';
+        } else {
+            barElement.style.height = `${clampedValue}%`;
+            barElement.style.display = 'block';
+        }
     }
     
     // Mettre à jour la valeur affichée
@@ -122,13 +441,31 @@ function updateBar(barElement, valueElement, value, type) {
     // Ajouter des classes CSS pour les états spéciaux
     const square = barElement.closest('.stat-square');
     if (square) {
-        square.classList.remove('low-health', 'critical-health');
+        square.classList.remove('low-health', 'critical-health', 'zero-health', 'zero-hunger', 'zero-thirst', 'zero-armor', 'warn-low');
         
         if (type === 'health') {
-            if (clampedValue <= 20) {
-                square.classList.add('critical-health');
-            } else if (clampedValue <= 50) {
-                square.classList.add('low-health');
+            if (clampedValue <= 0 && config.blinkOnZero.health) {
+                square.classList.add('zero-health');
+            } else if (clampedValue <= 10 && clampedValue > 0 && config.warnOnLow.health) {
+                square.classList.add('warn-low');
+            }
+        } else if (type === 'armor') {
+            if (clampedValue <= 0 && config.blinkOnZero.armor) {
+                square.classList.add('zero-armor');
+            } else if (clampedValue <= 10 && clampedValue > 0 && config.warnOnLow.armor) {
+                square.classList.add('warn-low');
+            }
+        } else if (type === 'hunger') {
+            if (clampedValue <= 0 && config.blinkOnZero.hunger) {
+                square.classList.add('zero-hunger');
+            } else if (clampedValue <= 10 && clampedValue > 0 && config.warnOnLow.hunger) {
+                square.classList.add('warn-low');
+            }
+        } else if (type === 'thirst') {
+            if (clampedValue <= 0 && config.blinkOnZero.thirst) {
+                square.classList.add('zero-thirst');
+            } else if (clampedValue <= 10 && clampedValue > 0 && config.warnOnLow.thirst) {
+                square.classList.add('warn-low');
             }
         }
     }
