@@ -1,4 +1,4 @@
-# Z-HUD
+# Z-HUD - Script HUD moderne pour FiveM ESX Legacy
 
 Un HUD (Heads-Up Display) moderne, épuré et optimisé pour FiveM avec le framework ESX Legacy.
 
