@@ -63,11 +63,5 @@ CFG = {
     -- HUD DE BASE SOUS LA MINIMAP
     -- ===========================================
     
-    -- Désactiver le HUD de base de GTA (sous la minimap)
-    disableDefaultHUD = {
-        health = true,    -- Masquer la barre de vie de base
-        armor = true,     -- Masquer la barre d'armure de base
-        ability = true,   -- Masquer la barre d'habileté de base
-        air = true        -- Masquer la barre d'air de base
-    }
+    disableDefaultHUD = true,   -- Désactiver le HUD de base de GTA (sous la minimap)
 }

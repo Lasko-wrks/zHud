@@ -2,6 +2,12 @@
 
 Un HUD élégant et configurable pour FiveM avec ESX Legacy.
 
+## 👀 Aperçus
+
+https://i.postimg.cc/jSFZ1qVb/Capture-d-cran-2025-09-03-004710.png
+https://i.postimg.cc/YC9d8GsR/Capture-d-cran-2025-09-03-004747.png
+https://i.postimg.cc/Pqv2nGh8/Capture-d-cran-2025-09-03-005608.png
+
 ## 🚀 Fonctionnalités
 
 - **Interface moderne** : Design épuré avec animations fluides
@@ -70,12 +76,7 @@ CFG = {
     },
     
     -- HUD de base sous la minimap
-    disableDefaultHUD = {
-        health = true,    -- Masquer la barre de vie de base
-        armor = true,     -- Masquer la barre d'armure de base
-        ability = true,   -- Masquer la barre d'habileté de base
-        air = true        -- Masquer la barre d'air de base
-    }
+    disableDefaultHUD = false,   -- Désactiver le HUD de base de GTA (sous la minimap)
 }
 ```
 
@@ -112,12 +113,11 @@ CFG.warnOnLow.pourcent = 15
 
 ### Masquer le HUD de base
 ```lua
--- Garder les barres de vie et armure de base
-CFG.disableDefaultHUD.health = false
-CFG.disableDefaultHUD.armor = false
+-- Désactiver complètement le HUD de base
+CFG.disableDefaultHUD = true
 
--- Masquer seulement la barre d'habileté
-CFG.disableDefaultHUD.ability = true
+-- Garder le HUD de base (défaut)
+CFG.disableDefaultHUD = false
 ```
 
 ## 🔌 Exports
@@ -130,8 +130,7 @@ exports['z_hud']:setHudVisible(true)
 
 ## 🛠️ Commandes
 
-- `/hud` - Réinitialiser le HUD
-- `/hudmoney` - Forcer la mise à jour de l'argent
+- `/hud` - Masquer/Afficher le HUD
 
 ## 🎯 Système d'alertes
 

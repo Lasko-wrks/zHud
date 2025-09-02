@@ -108,6 +108,7 @@ function SetAirAmount(amount)
     EndScaleformMovieMethod()
 end
 
+-- Initialisation du scaleform minimap
 Citizen.CreateThread(function()
     MinimapScaleform.scaleform = RequestScaleformMovie("minimap")
     SetRadarBigmapEnabled(true, false)
@@ -115,6 +116,7 @@ Citizen.CreateThread(function()
     SetRadarBigmapEnabled(false, false)
 end)
 
+-- Gestion du HUD de base sous la minimap
 Citizen.CreateThread(function()
     local minimap = RequestScaleformMovie("minimap")
     SetRadarBigmapEnabled(true, false)
@@ -126,32 +128,21 @@ Citizen.CreateThread(function()
         Wait(100)
     end
     
+    -- Boucle principale de gestion du HUD
     while true do
         Wait(0)
         
         -- Vérifier si on doit désactiver le HUD de base
-        if CFG.disableDefaultHUD and (CFG.disableDefaultHUD.health or CFG.disableDefaultHUD.armor) then
+        if CFG.disableDefaultHUD then
             -- Désactiver les barres de vie et armure de base
             BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
-            ScaleformMovieMethodAddParamInt(0) -- 0 = masqué
+            ScaleformMovieMethodAddParamInt(3) -- 3 = masqué
             EndScaleformMovieMethod()
         else
-            -- Afficher normalement
+            -- Afficher normalement le HUD de base
             BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
-            ScaleformMovieMethodAddParamInt(3) -- 3 = affiché
+            ScaleformMovieMethodAddParamInt(0) -- 0 = affiché
             EndScaleformMovieMethod()
-        end
-        
-        -- Désactiver la barre d'habileté si configuré
-        if CFG.disableDefaultHUD and CFG.disableDefaultHUD.ability then
-            SetAbilityVisible(false)
-        else
-            SetAbilityVisible(true)
-        end
-        
-        -- Désactiver la barre d'air si configurée
-        if CFG.disableDefaultHUD and CFG.disableDefaultHUD.air then
-            SetAirAmount(0)
         end
     end
 end)

@@ -55,7 +55,7 @@ body {
 .player-info {
     padding: 15px;
     position: fixed;
-    top: 20px;
+    top: 50px;
     right: 20px;
     width: 250px;
 }
