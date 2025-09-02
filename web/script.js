@@ -15,6 +15,7 @@ let hudData = {
 // Configuration par défaut
 let config = {
     themeColor: 'transparent',
+    alertColor: '#ff0000',
     elements: {
         health: true,
         armor: true,
@@ -33,10 +34,13 @@ let config = {
         thirst: true
     },
     warnOnLow: {
-        health: true,
-        armor: true,
-        hunger: true,
-        thirst: true
+        enabled: {
+            health: true,
+            armor: true,
+            hunger: true,
+            thirst: true
+        },
+        pourcent: 10
     }
 };
 
@@ -204,7 +208,8 @@ function applyConfigToCSS() {
     const root = document.documentElement;
     
     // Couleur du thème
-    root.style.setProperty('--theme-color', config.themeColor);
+    root.style.setProperty('--theme-color', config.themeColor); 
+    root.style.setProperty('--alert-color', config.alertColor);
     
     // Masquer/afficher les éléments selon la configuration
     toggleElements();
@@ -446,25 +451,25 @@ function updateBar(barElement, valueElement, value, type) {
         if (type === 'health') {
             if (clampedValue <= 0 && config.blinkOnZero.health) {
                 square.classList.add('zero-health');
-            } else if (clampedValue <= 10 && clampedValue > 0 && config.warnOnLow.health) {
+            } else if (clampedValue <= config.warnOnLow.pourcent && clampedValue > 0 && config.warnOnLow.enabled.health) {
                 square.classList.add('warn-low');
             }
         } else if (type === 'armor') {
             if (clampedValue <= 0 && config.blinkOnZero.armor) {
                 square.classList.add('zero-armor');
-            } else if (clampedValue <= 10 && clampedValue > 0 && config.warnOnLow.armor) {
+            } else if (clampedValue <= config.warnOnLow.pourcent && clampedValue > 0 && config.warnOnLow.enabled.armor) {
                 square.classList.add('warn-low');
             }
         } else if (type === 'hunger') {
             if (clampedValue <= 0 && config.blinkOnZero.hunger) {
                 square.classList.add('zero-hunger');
-            } else if (clampedValue <= 10 && clampedValue > 0 && config.warnOnLow.hunger) {
+            } else if (clampedValue <= config.warnOnLow.pourcent && clampedValue > 0 && config.warnOnLow.enabled.hunger) {
                 square.classList.add('warn-low');
             }
         } else if (type === 'thirst') {
             if (clampedValue <= 0 && config.blinkOnZero.thirst) {
                 square.classList.add('zero-thirst');
-            } else if (clampedValue <= 10 && clampedValue > 0 && config.warnOnLow.thirst) {
+            } else if (clampedValue <= config.warnOnLow.pourcent && clampedValue > 0 && config.warnOnLow.enabled.thirst) {
                 square.classList.add('warn-low');
             }
         }

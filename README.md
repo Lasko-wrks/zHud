@@ -58,12 +58,23 @@ CFG = {
         thirst = true     -- Clignotement quand soif = 0
     },
     
-    -- Alertes à 10%
+    -- Alertes au seuil configuré
     warnOnLow = {
-        health = true,    -- Warning quand vie = 10%
-        armor = true,     -- Warning quand armure = 10%
-        hunger = true,    -- Warning quand faim = 10%
-        thirst = true     -- Warning quand soif = 10%
+        enabled = {
+            health = true,    -- Activer le warning pour la vie
+            armor = true,     -- Activer le warning pour l'armure
+            hunger = true,    -- Activer le warning pour la faim
+            thirst = true    -- Activer le warning pour la soif
+        },
+        pourcent = 10        -- Seuil en pourcentage (défaut: 10%)
+    },
+    
+    -- HUD de base sous la minimap
+    disableDefaultHUD = {
+        health = true,    -- Masquer la barre de vie de base
+        armor = true,     -- Masquer la barre d'armure de base
+        ability = true,   -- Masquer la barre d'habileté de base
+        air = true        -- Masquer la barre d'air de base
     }
 }
 ```
@@ -92,8 +103,21 @@ CFG.playerInfo.bank = false
 -- Pas de clignotement à 0% pour la faim
 CFG.blinkOnZero.hunger = false
 
--- Pas de warning à 10% pour l'armure
-CFG.warnOnLow.armor = false
+-- Pas de warning pour l'armure
+CFG.warnOnLow.enabled.armor = false
+
+-- Changer le seuil de warning à 15%
+CFG.warnOnLow.pourcent = 15
+```
+
+### Masquer le HUD de base
+```lua
+-- Garder les barres de vie et armure de base
+CFG.disableDefaultHUD.health = false
+CFG.disableDefaultHUD.armor = false
+
+-- Masquer seulement la barre d'habileté
+CFG.disableDefaultHUD.ability = true
 ```
 
 ## 🔌 Exports
@@ -111,9 +135,10 @@ exports['z_hud']:setHudVisible(true)
 
 ## 🎯 Système d'alertes
 
-### Warning à 10%
+### Warning configurable
 - Clignotement orange sans ombre
-- Se déclenche quand la valeur passe sous 10%
+- Se déclenche quand la valeur passe sous le seuil défini (défaut: 10%)
+- Seuil configurable via `CFG.warnOnLow.pourcent`
 - S'arrête automatiquement à 0%
 
 ### Clignotement à 0%

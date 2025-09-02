@@ -1,6 +1,7 @@
 /* Variables CSS dynamiques */
 :root {
     --theme-color: #00FFAD;
+    --alert-color: #ff0000;
 }
 
 /* Reset et base */
@@ -204,7 +205,6 @@ body {
 /* Effet de clignotement quand la vie atteint 0 */
 .health-square.zero-health {
     animation: blinkRed 0.8s ease-in-out infinite;
-    box-shadow: 0 0 15px var(--theme-color);
 }
 
 .health-square.zero-health .progress-bar {
@@ -212,10 +212,13 @@ body {
     box-shadow: 0 0 10px var(--theme-color);
 }
 
+.health-square.zero-health .stat-icon {
+    color: var(--alert-color);
+}
+
 /* Effet de clignotement pour l'armure à 0 */
 .armor-square.zero-armor {
     animation: blinkRed 0.8s ease-in-out infinite;
-    box-shadow: 0 0 15px var(--theme-color);
 }
 
 .armor-square.zero-armor .progress-bar {
@@ -223,26 +226,35 @@ body {
     box-shadow: 0 0 10px var(--theme-color);
 }
 
+.armor-square.zero-armor .stat-icon {
+    color: var(--alert-color);
+}
+
 /* Effet de clignotement pour la faim à 0 */
 .hunger-square.zero-hunger {
     animation: blinkRed 0.8s ease-in-out infinite;
-    box-shadow: 0 0 15px var(--theme-color);
 }
 
 .hunger-square.zero-hunger .progress-bar {
     background: var(--theme-color);
     box-shadow: 0 0 10px var(--theme-color);
 }
+.hunger-square.zero-hunger .stat-icon {
+    color: var(--alert-color);
+}
 
 /* Effet de clignotement pour la soif à 0 */
 .thirst-square.zero-thirst {
-    animation: blinkRed 0.8s ease-in-out infinite;
-    box-shadow: 0 0 15px var(--theme-color);
+    animation: blinkRed 0.8s ease-in-out infinite;      
 }
 
 .thirst-square.zero-thirst .progress-bar {
     background: var(--theme-color);
     box-shadow: 0 0 10px var(--theme-color);
+}
+
+.thirst-square.zero-thirst .stat-icon {
+    color: var(--alert-color);
 }
 
 /* Effet de warning à 10% (clignotement sans ombre) */

@@ -14,7 +14,8 @@ CFG = {
     -- COULEUR DU THÈME
     -- ===========================================
     
-    themeColor = '#ff0000', -- Couleur principale du thème (remplace tous les #00FFAD)
+    themeColor = '#00FFAD', -- Couleur principale du thème (remplace tous les #00FFAD)
+    alertColor = '#ff0000', -- Couleur de l'alerte
     
     -- ===========================================
     -- ÉLÉMENTS À AFFICHER
@@ -42,16 +43,31 @@ CFG = {
     -- Clignotement quand l'élément atteint 0
     blinkOnZero = {
         health = true,    -- Clignoter quand vie = 0
-        armor = true,     -- Clignoter quand armure = 0
+        armor = false,     -- Clignoter quand armure = 0
         hunger = true,    -- Clignoter quand faim = 0
         thirst = true     -- Clignoter quand soif = 0
     },
     
-    -- Warning quand l'élément atteint 10% (clignote)
+    -- Warning quand l'élément atteint un seuil (clignote)
     warnOnLow = {
-        health = true,    -- Warning quand vie = 10%
-        armor = true,     -- Warning quand armure = 10%
-        hunger = true,    -- Warning quand faim = 10%
-        thirst = true     -- Warning quand soif = 10%
+        enabled = {
+            health = true,    -- Activer le warning pour la vie
+            armor = true,     -- Activer le warning pour l'armure
+            hunger = true,    -- Activer le warning pour la faim
+            thirst = true    -- Activer le warning pour la soif
+        },
+        pourcent = 10        -- Seuil en pourcentage (défaut: 10%)
+    },
+    
+    -- ===========================================
+    -- HUD DE BASE SOUS LA MINIMAP
+    -- ===========================================
+    
+    -- Désactiver le HUD de base de GTA (sous la minimap)
+    disableDefaultHUD = {
+        health = true,    -- Masquer la barre de vie de base
+        armor = true,     -- Masquer la barre d'armure de base
+        ability = true,   -- Masquer la barre d'habileté de base
+        air = true        -- Masquer la barre d'air de base
     }
 }

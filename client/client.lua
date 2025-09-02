@@ -94,6 +94,7 @@ function sendConfigToHUD()
         type = 'updateConfig',
         config = {
             themeColor = CFG.themeColor,
+            alertColor = CFG.alertColor,
             elements = CFG.elements,
             playerInfo = CFG.playerInfo,
             blinkOnZero = CFG.blinkOnZero,
