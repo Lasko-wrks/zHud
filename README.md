@@ -21,6 +21,10 @@ Un HUD élégant et configurable pour FiveM avec ESX Legacy.
 
 - **F1** : Afficher/Masquer le HUD
 
+## 🛠️ Commandes
+
+- `/hud` - Masquer/Afficher le HUD
+
 ## 📁 Installation
 
 1. **Télécharger** dans votre dossier `resources`
@@ -127,10 +131,6 @@ CFG.disableDefaultHUD = false
 -- Masquer/Afficher le HUD
 exports['z_hud']:setHudVisible(true)
 ```
-
-## 🛠️ Commandes
-
-- `/hud` - Masquer/Afficher le HUD
 
 ## 🎯 Système d'alertes
 
