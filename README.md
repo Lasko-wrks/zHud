@@ -4,11 +4,9 @@ Un HUD élégant et configurable pour FiveM avec ESX Legacy.
 
 ## 👀 Aperçus
 
-[url=https://postimg.cc/gx3VXWkS][img]https://i.postimg.cc/gx3VXWkS/Capture-d-cran-2025-09-03-004710.png[/img][/url]
-
-[url=https://postimg.cc/svkPgXyG][img]https://i.postimg.cc/svkPgXyG/Capture-d-cran-2025-09-03-004747.png[/img][/url]
-
-[url=https://postimg.cc/f3ZxYrVw][img]https://i.postimg.cc/f3ZxYrVw/Capture-d-cran-2025-09-03-005608.png[/img][/url]
+![HUD Principal](https://i.postimg.cc/gx3VXWkS/hud-main.png)
+![HUD Informations](https://i.postimg.cc/svkPgXyG/hud-info.png)
+![HUD Alertes](https://i.postimg.cc/f3ZxYrVw/hud-alerts.png)
 
 ## 🚀 Fonctionnalités
 
